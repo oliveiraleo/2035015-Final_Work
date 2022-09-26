@@ -1,16 +1,18 @@
 #!/usr/bin/bash
 
-#Vars
+###Vars###
+
 numOfPackets=1024 #total number of packets to send
 portNum=1337 #TCP&UDP port number
 hostIPAdrr=127.0.0.1 #server IP address
 #pktLoss=1 #controls how many packets will be dropped during execution
 outputFileName=pkt-capture.pcap
 
-#Functions
+###Functions###
+
 checkSuperUserAcess () {
 if [ "$EUID" -ne 0 ]
-    then echo "Please run as root!"
+    then echo "Please run this script as root!"
     exit 1
 fi
 }
@@ -19,11 +21,12 @@ printMessageDone () {
 echo "[ OK ]"
 }
 
+#controls how many packets will be dropped during execution
 configurePacketLoss () {
 if [ $# -eq 1 ]
-    then pktLoss=$1 #controls how many packets will be dropped during execution
+    then pktLoss=$1 
         echo -e "[INFO] Packet loss set to $1%\n"
-    else pktLoss=0 #controls how many packets will be dropped during execution
+    else pktLoss=0
         echo -e "[INFO] Packet loss NOT set\n"
 fi
 }
@@ -101,6 +104,7 @@ if [ "$pktLoss" -eq 0 ]
 fi
 }
 
+#needed to undo the modifications made by enablePktLoss function
 disablePktLoss () {
 if [ "$pktLoss" -ne 0 ]
     then
